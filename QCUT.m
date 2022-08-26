@@ -1,7 +1,10 @@
 function [eigvec_now_2D,binarized]=QCUT(H,smooth,PixNum, suppixel,image_now)
 
 rng(27);
-nn = 1;%round(max(suppixel(:))*1);
+nn = 1;
+%nn = round(max(suppixel(:))*1);
+%disp('nn');
+%disp(nn);
 
 [eigvec,eigval]=eigs(H,nn,'SM');
 
@@ -38,9 +41,13 @@ eigvec_now_2D = sup2pixel( PixNum, suppixel(:)-1, (superposed) );
 eigvec_now_2D = reshape(eigvec_now_2D, size(suppixel));
 
 [clustered,c] = kmeans(superposed,2);
-clustered = sortClusters(clustered,c);
-binarized = sup2pixel( PixNum, suppixel(:)-1, (clustered) );
-binarized = reshape( binarized,size(suppixel));
+%filename = sprintf('test.png');
+%imshow(superposed,[]);pause(1);  
+
+%[clustered,c] = imsegkmeans(superposed,3);
+clustered = sortClusters(clustered, c);
+binarized = sup2pixel(PixNum, suppixel(:) - 1, (clustered) );
+binarized = reshape(binarized, size(suppixel));
 
 
     function output=sortClusters(clusters,c)

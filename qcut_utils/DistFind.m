@@ -1,9 +1,14 @@
 function ALL_SIM=DistFind(GVMean,max_label)
-ss = 0.1;
+ss = 0.18; % anything above 0.22 doesn't work
 GVMean = mat2gray(GVMean);
 M = squareform(pdist(GVMean'));
-ALL_SIM = exp(-M.^2 ./ (2*ss^2));
+ALL_SIM =exp(-M.^2 ./ (2*ss^2));%*1/ss^2;
 
+mu = 0;
+ss = 0.28;%1025825
+sigma = ss;
+
+%ALL_SIM = normpdf(M, mu, sigma);
 
 %ALL_SIM=zeros(max_label,max_label);
 %dist_func = @(x) 1./(0.00001+x);

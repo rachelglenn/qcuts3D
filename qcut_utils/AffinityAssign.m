@@ -1,37 +1,38 @@
-function H=AffinityAssign(neighbourhood,length_final_neighbours,ALL_DIST, max_label,centroid_dist,repetitions)
+function H=AffinityAssign(neighbourhood,length_final_neighbours,ALL_DIST, max_label,coupling)
+%function H=AffinityAssign(neighbourhood,length_final_neighbours,ALL_DIST, max_label,centroid_dist,repetitions, coupling)
 
 %Initialize Hamiltonian
 H=zeros(max_label,max_label);
 
-%first_neighbourhood=neighbourhood.First;
-%second_neighbourhood=neighbourhood.Second;
-%third_neighbourhood=neighbourhood.Third;
-%fourth_neighbourhood=neighbourhood.Fourth;
-%fifth_neighbourhood=neighbourhood.Fifth;
-
-%length_first_neighbours=cellfun('length',first_neighbourhood);
-%length_second_neighbours=cellfun('length',second_neighbourhood);
-%length_third_neighbours=cellfun('length',third_neighbourhood);
-%length_fourth_neighbours=cellfun('length',fourth_neighbourhood);
-%length_fifth_neighbours=cellfun('length',fifth_neighbourhood);
-
+% first_neighbourhood=neighbourhood.First;
+% second_neighbourhood=neighbourhood.Second;
+% third_neighbourhood=neighbourhood.Third;
+% fourth_neighbourhood=neighbourhood.Fourth;
+% fifth_neighbourhood=neighbourhood.Fifth;
+% 
+% length_first_neighbours=cellfun('length',first_neighbourhood);
+% length_second_neighbours=cellfun('length',second_neighbourhood);
+% length_third_neighbours=cellfun('length',third_neighbourhood);
+% length_fourth_neighbours=cellfun('length',fourth_neighbourhood);
+% length_fifth_neighbours=cellfun('length',fifth_neighbourhood);
+% 
 % calculate degree matrix
 
-%W = zeros(size(ALL_DIST));
-%for i=1:max_label
+% W = zeros(size(ALL_DIST));
+% for i=1:max_label
 %    neighbours = neighbourhood{i};
 %    for j=1:length(neighbours)
 %        W(i,neighbours(j)) = ALL_DIST(i,neighbours(j));
 %    end
-%end
+% end
 W = ALL_DIST;
 degs = sum(W, 2);
 D    = sparse(1:size(W, 1), 1:size(W, 2), degs);
 
 
 % compute unnormalized Laplacian
-L = D - W;
-%keyboard
+L = D -  W;
+% %keyboard
 % for i=1:max_label
 %    self_affinity = 0;
 %    for j=1:max_label
@@ -49,9 +50,9 @@ L = D - W;
 % end
 
 %keyboard
-%for label_counter=1:max_label
-    
-    % FIRST NEIGHBOURS
+% for label_counter=1:max_label
+%     
+%     % FIRST NEIGHBOURS
 %     neighbours=(first_neighbourhood{label_counter});
 %     length_neighbours=length_first_neighbours(label_counter);
 %     for neighbour_counter=1:length(neighbours)
@@ -62,9 +63,9 @@ L = D - W;
 %         H(label_counter,neighbours(neighbour_counter))=-UPDATE;
 %         H(label_counter,label_counter)=H(label_counter,label_counter)+UPDATE;
 %     end
-    
-    
-    % SECOND NEIGHBOURS
+%     
+%     
+%     % SECOND NEIGHBOURS
 %     neighbours=(second_neighbourhood{label_counter});
 %     length_neighbours=length_second_neighbours(label_counter);
 %     for neighbour_counter=1:length(neighbours)
@@ -75,8 +76,8 @@ L = D - W;
 %         H(label_counter,neighbours(neighbour_counter))=-UPDATE;
 %         H(label_counter,label_counter)=H(label_counter,label_counter)+UPDATE;
 %     end
-    
-    % THIRD NEIGHBOURS
+%     
+%     % THIRD NEIGHBOURS
 %     neighbours=(third_neighbourhood{label_counter});
 %     length_neighbours=length_third_neighbours(label_counter);
 %     for neighbour_counter=1:length(neighbours)
@@ -87,8 +88,8 @@ L = D - W;
 %         H(label_counter,neighbours(neighbour_counter))=-UPDATE;
 %         H(label_counter,label_counter)=H(label_counter,label_counter)+UPDATE;
 %     end
-%     
-%     % FOURTH NEIGHBOURS
+% %     
+% %     % FOURTH NEIGHBOURS
 %     neighbours=(fourth_neighbourhood{label_counter});
 %     length_neighbours=length_fourth_neighbours(label_counter);
 %     for neighbour_counter=1:length(neighbours)
@@ -99,8 +100,8 @@ L = D - W;
 %         H(label_counter,neighbours(neighbour_counter))=-UPDATE;
 %         H(label_counter,label_counter)=H(label_counter,label_counter)+UPDATE;
 %     end
-%     
-%     % FIFTH NEIGHBOURS
+% %     
+% %     % FIFTH NEIGHBOURS
 %     neighbours=(fifth_neighbourhood{label_counter});
 %     length_neighbours=length_fifth_neighbours(label_counter);
 %     for neighbour_counter=1:length(neighbours)
@@ -111,9 +112,9 @@ L = D - W;
 %         H(label_counter,neighbours(neighbour_counter))=-UPDATE;
 %         H(label_counter,label_counter)=H(label_counter,label_counter)+UPDATE;
 %     end
-    
-    
-%end
+%     
+%     
+% end
 
 H=L;
 %H = H/mean(H(:));
