@@ -1,8 +1,8 @@
 function ALL_SIM=DistFind(GVMean,max_label)
-ss = 0.18; % anything above 0.22 doesn't work
+ss = 0.28; % anything above 0.22 doesn't work
 GVMean = mat2gray(GVMean);
 M = squareform(pdist(GVMean'));
-ALL_SIM =exp(-M.^2 ./ (2*ss^2));%*1/ss^2;
+ALL_SIM =exp(-M.^2 ./ (2*ss^2))*1/ss^2*1/2*1/sqrt(pi);
 
 mu = 0;
 ss = 0.28;%1025825

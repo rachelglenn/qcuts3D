@@ -3,38 +3,14 @@ function [output, coupling_out, suppix_out] = applyQCUTv3(image_now, suppix_num_
 %image_now = imadjustn(image_now);
 
 agg = [];
-
-
 i = 1;
-topLevelFolder = '/rsrch1/ip/rglenn1/data/Processed';
-patientRef = topLevelFolder+ "/1025825";
-phase = "/Ven.raw.nii.gz";
-info = niftiinfo(patientRef + phase');
-historef = niftiread(info);
-%coupling = uint32(1):10:uint32(length( historef(1,1,:)  ));
-disp(length(historef(1,1,:)) );
-
 coupling_out = zeros(size(coupling).*size(suppix_num_in));
 suppix_out = zeros(size(coupling).*size(suppix_num_in));
 
 for suppix_num=suppix_num_in
     for lambda=coupling
-        % Adjust image
-        for n = 1 : length(image_now(1,1,:))
-            %grayImage = im2single(mat2gray(image_now(:,:,n)));
-            %grayImRef = im2uint8(mat2gray(historef(:,:,lambda)));
-            grayImage = imlocalbrighten(image_now(:,:,n),lambda);
-          
-            %grayImage = locallapfilt(grayImage, single(lambda), 0.5);
-            %if lambda ~= 1
-            %    grayImage = histeq(grayImage, lambda);
-            %end
-            %grayImage = imadjust(grayImage,[lambda,0.8]);
-            %grayImage = imhistmatch(grayImage,grayImRef,'method','polynomial');
-
-            image_now(:,:,n) = grayImage;
-        end
-        [GVMean, suppixel, boundaries,PixNum, LabelLine,width, height,recon]=SolveSlic(image_now,suppix_num,patient);
+        out_image = TransformImage(image_now, lambda);
+        [GVMean, suppixel, boundaries,PixNum, LabelLine,width, height,recon]=SolveSlic(out_image,suppix_num,patient);
         [neighbourhood,LF,max_label]=FindNeighbours(suppixel);
         
         ALL_DIST=DistFind(GVMean,max_label);
@@ -57,7 +33,7 @@ for suppix_num=suppix_num_in
     end
 end
 %gg = image_now>graythresh(image_now);
-%agg = agg>graythresh(image_now*1.05);
+agg = agg>graythresh(image_now*0.85);
 output = agg;
 %output_mean=mean(agg,4);
 
